@@ -1,4 +1,3 @@
-import exceptions.TrainAttachmentException;
 import models.*;
 import org.junit.jupiter.api.*;
 
@@ -168,7 +167,7 @@ public class TrainTest {
     }
 
     @Test
-    public void T16_CantAttachMoreWagonsThanTrainsCapacity() throws TrainAttachmentException {
+    public void T16_CantAttachMoreWagonsThanTrainsCapacity() {
         assertFalse(passengerTrain.canAttach(passengerWagon1));
         assertFalse(passengerTrain.canAttach(passengerWagon2));
         assertTrue(passengerTrain.canAttach(passengerWagon3));
@@ -179,7 +178,7 @@ public class TrainTest {
     }
 
     @Test
-    public void T16_CantAttachWrongTypeWagons() throws TrainAttachmentException {
+    public void T16_CantAttachWrongTypeWagons()  {
         assertFalse(freightTrain.canAttach(passengerWagon3));
         assertFalse(passengerTrain.canAttach(freightWagon2));
         assertTrue(trainWithoutWagons.canAttach(passengerWagon3));
@@ -190,7 +189,7 @@ public class TrainTest {
     }
 
     @Test
-    public void T16_CantAttachWagonsAlreadyOnTheTrain() throws TrainAttachmentException {
+    public void T16_CantAttachWagonsAlreadyOnTheTrain() {
         assertFalse(freightTrain.canAttach(freightWagon9001));
         assertFalse(freightTrain.canAttach(freightWagon9002));
         assertFalse(passengerTrain.canAttach(passengerWagon8001));
@@ -198,7 +197,7 @@ public class TrainTest {
     }
 
     @Test
-    public void T17_CanAttachToRear() throws TrainAttachmentException {
+    public void T17_CanAttachToRear()  {
         assertTrue(trainWithoutWagons.attachToRear(passengerTrain.getLastWagonAttached()),
                 "can attach a single wagon to an empty train");
         assertEquals(8007, trainWithoutWagons.getFirstWagon().getId(),
@@ -228,7 +227,7 @@ public class TrainTest {
     }
 
     @Test
-    public void T18_CanInsertAtFront() throws TrainAttachmentException {
+    public void T18_CanInsertAtFront() {
         assertTrue(freightTrain.insertAtFront(freightWagon1));
         assertEquals(5, freightTrain.getNumberOfWagons());
         assertSame(freightWagon1, freightTrain.getFirstWagon(),
@@ -250,7 +249,7 @@ public class TrainTest {
     }
 
     @Test
-    public void T18_CanInsertPassengerWagonsToEmptyTrainWithCapacity() throws TrainAttachmentException {
+    public void T18_CanInsertPassengerWagonsToEmptyTrainWithCapacity() {
         // check type compatibility and loc capacity
         assertTrue(trainWithoutWagons.insertAtFront(passengerWagon1));
         assertEquals(3, trainWithoutWagons.getNumberOfWagons());
@@ -263,7 +262,7 @@ public class TrainTest {
     }
 
     @Test
-    public void T19_CanInsertAtAnyPosition() throws TrainAttachmentException {
+    public void T19_CanInsertAtAnyPosition() {
         assertTrue(trainWithoutWagons.insertAtPosition(0, passengerTrain.getLastWagonAttached()),
                 "can insert a single wagon at position 1 of empty train");
         assertEquals(8007, trainWithoutWagons.getFirstWagon().getId(),
@@ -301,7 +300,7 @@ public class TrainTest {
     }
 
     @Test
-    public void T20_ShouldSplitTrainCorrectly() throws TrainAttachmentException {
+    public void T20_ShouldSplitTrainCorrectly() {
         assertTrue(passengerTrain.splitAtPosition(4, trainWithoutWagons));
         assertEquals(3, trainWithoutWagons.getNumberOfWagons());
         assertEquals(4, passengerTrain.getNumberOfWagons());
@@ -326,12 +325,12 @@ public class TrainTest {
     }
 
     @Test
-    public void T20_CantSplitAnEmptyTrain() throws TrainAttachmentException {
+    public void T20_CantSplitAnEmptyTrain() {
         assertFalse(trainWithoutWagons.splitAtPosition(1, passengerTrain));
     }
 
     @Test
-    public void T20_CantSplitTowardsAFullTrain() throws TrainAttachmentException {
+    public void T20_CantSplitTowardsAFullTrain()  {
         assertTrue(trainWithoutWagons.attachToRear(passengerWagon1));
         assertFalse(trainWithoutWagons.splitAtPosition(0, passengerTrain),
                 "cannot split 3 wagons towards an almost full passenger train");
@@ -348,7 +347,7 @@ public class TrainTest {
     }
 
     @Test
-    public void T21_ShouldMoveOneWagonCorrectly() throws TrainAttachmentException {
+    public void T21_ShouldMoveOneWagonCorrectly() {
         assertTrue(passengerTrain.moveOneWagon(8002, trainWithoutWagons),
                 "can move one wagon from mid-sequence to an empty train");
         assertEquals(1, trainWithoutWagons.getNumberOfWagons(),

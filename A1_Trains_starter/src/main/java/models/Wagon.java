@@ -3,11 +3,11 @@ package models;
 public abstract class Wagon {
     protected int id;               // some unique ID of a Wagon
     private Wagon nextWagon;        // another wagon that is appended at the tail of this wagon
-                                    // a.k.a. the successor of this wagon in a sequence
-                                    // set to null if no successor is connected
+    // a.k.a. the successor of this wagon in a sequence
+    // set to null if no successor is connected
     private Wagon previousWagon;    // another wagon that is prepended at the front of this wagon
-                                    // a.k.a. the predecessor of this wagon in a sequence
-                                    // set to null if no predecessor is connected
+    // a.k.a. the predecessor of this wagon in a sequence
+    // set to null if no predecessor is connected
 
 
     // representation invariant propositions:
@@ -156,7 +156,7 @@ public abstract class Wagon {
      */
     public void removeFromSequence() {
         if (!hasPreviousWagon()){//first wagon
-             this.detachTail();
+            this.detachTail();
         }
 
         if (hasPreviousWagon() && hasNextWagon()){//middle wagon

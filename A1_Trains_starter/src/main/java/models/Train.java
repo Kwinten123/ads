@@ -1,6 +1,7 @@
 package models;
 
-import exceptions.TrainAttachmentException;
+
+import com.sun.source.tree.BreakTree;
 
 public class Train {
     private final String origin;
@@ -128,7 +129,7 @@ public class Train {
         return totalMaxWeight;
     }
 
-     /**
+    /**
      * Finds the wagon at the given position (starting at 0 for the first wagon of the train)
      * @param position
      * @return  the wagon found at the given position
@@ -181,22 +182,22 @@ public class Train {
      * @param wagon the head wagon of a sequence of wagons to consider for attachment
      * @return whether type and capacity of this train can accommodate attachment of the sequence
      */
-    public boolean canAttach(Wagon wagon) throws TrainAttachmentException {
+    public boolean canAttach(Wagon wagon) {
         if (findWagonById(wagon.id) == wagon) {  // Wagon exists in the train already
-            throw new TrainAttachmentException("Wagon is already part of the train.");
+            return false;
         }
 
         if (isPassengerTrain() && !(wagon instanceof PassengerWagon)) {
-            throw new TrainAttachmentException("This is a passenger train, please only attach passenger wagons!");
+            return false;
         }
 
         if (isFreightTrain() && !(wagon instanceof FreightWagon)) {
-            throw new TrainAttachmentException("This is a freight train, please only attach freight wagons!");
+            return false;
         }
 
         int totalNumberOfWagons = getNumberOfWagons() + wagon.getSequenceLength();
         if (this.engine.getMaxWagons() < totalNumberOfWagons) {
-            throw new TrainAttachmentException("Train capacity exceeded.");
+            return false;
         }
 
         return true; // If all checks pass, return true.
@@ -211,7 +212,7 @@ public class Train {
      * @param wagon the head wagon of a sequence of wagons to be attached
      * @return  whether the attachment could be completed successfully
      */
-    public boolean attachToRear(Wagon wagon) throws TrainAttachmentException {
+    public boolean attachToRear(Wagon wagon) {
         if (!canAttach(wagon)) return false;
 
         if (wagon.hasPreviousWagon()) {
@@ -257,21 +258,19 @@ public class Train {
      * @param wagon the head wagon of a sequence of wagons to be inserted
      * @return  whether the insertion could be completed successfully
      */
-    public boolean insertAtFront(Wagon wagon) throws TrainAttachmentException {
-        if(!hasWagons()) return false;
-
+    public boolean insertAtFront(Wagon wagon) {
         if (!canAttach(wagon)) return false;
 
         //detatch head wagon from predecessor, if any
         wagon.detachFront();
 
-        wagon.getLastWagonAttached().attachTail(firstWagon);
+        if (hasWagons()){
+            wagon.getLastWagonAttached().attachTail(firstWagon);
+        }
 
         setFirstWagon(wagon);
 
-        // TODO
-
-        return false;   // replace by proper outcome
+        return true;
     }
 
     /**
@@ -288,12 +287,20 @@ public class Train {
      * @param wagon the head wagon of a sequence of wagons to be inserted
      * @return  whether the insertion could be completed successfully
      */
-    public boolean insertAtPosition(int position, Wagon wagon) throws TrainAttachmentException {
-        if (!hasWagons()) return false;
 
+    //TODO
+    public boolean insertAtPosition(int position, Wagon wagon) {
         if (!canAttach(wagon)) return false;
 
+        //is wagon in bounds?
+        if (findWagonAtPosition(position) == null) return false;
+
         wagon.detachFront();
+
+        if (!hasWagons() || position == 0) {
+            setFirstWagon(wagon);
+            return true;
+        }
 
         Wagon toBeReattachedWagon = findWagonAtPosition(position);
 
@@ -301,8 +308,11 @@ public class Train {
 
         wagon.getLastWagonAttached().attachTail(toBeReattachedWagon);
         toBeAttachedToWagon.attachTail(wagon);
+
         return true;
     }
+
+
 
     /**
      * Tries to remove one Wagon with the given wagonId from this train
@@ -315,9 +325,12 @@ public class Train {
      *                  toTrain shall be different from this train
      * @return  whether the move could be completed successfully
      */
-    public boolean moveOneWagon(int wagonId, Train toTrain) throws TrainAttachmentException {
+    public boolean moveOneWagon(int wagonId, Train toTrain) {
 
         Wagon toBeMovedWagon = findWagonById(wagonId);
+
+        if (toBeMovedWagon == null) return false;
+
 
         //TODO een beetje questionable misschien nog anders oplossen.
         if (toBeMovedWagon == firstWagon){
@@ -329,11 +342,13 @@ public class Train {
         //check if you can attach to train
         if (!toTrain.canAttach(toBeMovedWagon)) return false;
 
+        if (!toTrain.hasWagons()){
+            toTrain.setFirstWagon(toBeMovedWagon);
+        }
+
         toTrain.attachToRear(toBeMovedWagon);
-
-
-        return false;   // replace by proper outcome
-     }
+        return true;
+    }
 
     /**
      * Tries to split this train before the wagon at given position and move the complete sequence
@@ -346,10 +361,17 @@ public class Train {
      *                  toTrain shall be different from this train
      * @return  whether the move could be completed successfully
      */
-    public boolean splitAtPosition(int position, Train toTrain) throws TrainAttachmentException {
+    public boolean splitAtPosition(int position, Train toTrain) {
         if (!hasWagons()) return false;
 
+
+
+        //is wagon in bounds?
+        if (findWagonAtPosition(position) == null) return false;
+
+
         Wagon toBeMovedWagon = findWagonAtPosition(position);
+
 
         if (!toTrain.canAttach(toBeMovedWagon)) return false;
 
