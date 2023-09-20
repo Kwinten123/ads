@@ -268,6 +268,7 @@ public class TrainTest {
         assertEquals(8007, trainWithoutWagons.getFirstWagon().getId(),
                 "insertAtPosition should disconnect and insert the given head wagon");
 
+        //TODO
         assertTrue(trainWithoutWagons.insertAtPosition(0, passengerTrain.getLastWagonAttached()),
                 "can insert a single wagon at position 1 of a train");
         assertEquals(8006, trainWithoutWagons.getFirstWagon().getId(),

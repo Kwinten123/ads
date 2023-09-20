@@ -38,16 +38,25 @@ public class TrainsMain {
         passengerWagon3.attachTail(passengerWagon4);
 //
 //
-        Wagon rev = passengerWagon1.reverseSequence();
-        System.out.println(rev);
+
 //        passengerWagon6.attachTail(passengerWagon7);
 //        passengerWagon7.attachTail(passengerWagon8);
 
-//
-//        Locomotive rembrandt = new Locomotive(24531, 7);
-//        Locomotive locomotive = new Locomotive(54333, 7);
-//        Train amsterdamParis = new Train(rembrandt, "Amsterdam", "Paris");
-//
+
+        Locomotive rembrandt = new Locomotive(24531, 7);
+        Locomotive locomotive = new Locomotive(54333, 7);
+        Train amsterdamParis = new Train(rembrandt, "Amsterdam", "Paris");
+
+
+//    amsterdamParis.attachToRear(passengerWagon7);
+
+        System.out.println(amsterdamParis);
+
+
+        System.out.println(amsterdamParis.insertAtPosition(0, passengerWagon8));
+
+
+        System.out.println(amsterdamParis);
 //        Train berlinParis = new Train(locomotive, "Berlin", "Paris");
 //
 //        amsterdamParis.attachToRear(passengerWagon1);
