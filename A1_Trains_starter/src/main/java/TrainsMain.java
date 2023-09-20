@@ -1,11 +1,10 @@
-import exceptions.TrainAttachmentException;
 import models.*;
 
 import java.util.Locale;
 
 public class TrainsMain {
 
-    public static void main(String[] args) throws TrainAttachmentException {
+    public static void main(String[] args) {
         Locale.setDefault(Locale.ENGLISH);
         System.out.println("\n");
 //        System.out.println("Welcome to the HvA trains configurator");

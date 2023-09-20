@@ -290,27 +290,46 @@ public class Train {
 
     //TODO
     public boolean insertAtPosition(int position, Wagon wagon) {
-        if (!canAttach(wagon)) return false;
+        // Check if the wagon can be attached
+        if (!canAttach(wagon)) {
+            return false;
+        }
 
-        //is wagon in bounds?
-        if (findWagonAtPosition(position) == null) return false;
+        // If there are no wagons in the train and position is not 0, return false
+        if (!hasWagons() && position != 0) {
+            return false;
+        }
 
-        wagon.detachFront();
-
+        // If the train has no wagons or position is 0, set the inserted wagon as the first wagon
         if (!hasWagons() || position == 0) {
             setFirstWagon(wagon);
             return true;
         }
 
+        //-1 to set the length equal to the position
+        int trainLength = firstWagon.getSequenceLength();
+
+
+        if (trainLength == position){
+            firstWagon.getLastWagonAttached().attachTail(wagon);
+            return true;
+        }
+
         Wagon toBeReattachedWagon = findWagonAtPosition(position);
+
+        if (toBeReattachedWagon == null) {
+            return false;
+        }
+
+        wagon.detachFront();
 
         Wagon toBeAttachedToWagon = toBeReattachedWagon.detachFront();
 
-        wagon.getLastWagonAttached().attachTail(toBeReattachedWagon);
         toBeAttachedToWagon.attachTail(wagon);
 
         return true;
     }
+
 
 
 

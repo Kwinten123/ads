@@ -69,6 +69,9 @@ public abstract class Wagon {
         int length = 1; // Start with 1 to count the current wagon itself
 
         Wagon currentWagon = this;
+
+        if (!currentWagon.hasNextWagon()) return length;
+
         while (currentWagon.hasNextWagon()) {
             currentWagon = currentWagon.getNextWagon();
             length++;
@@ -182,28 +185,40 @@ public abstract class Wagon {
     public Wagon reverseSequence() {
         int sequenceLength = getSequenceLength();
 
-        System.out.println(sequenceLength);
         if (sequenceLength < 2) return null;
 
-        Wagon newStartOfWagon = getLastWagonAttached();
 
-        Wagon currentWagon = newStartOfWagon;
-        Wagon foreLastWagon = currentWagon.detachFront();
-        Wagon beforeForeLastWagon;
+        Wagon currentWagon = this;
+        Wagon nextWagon;
 
-        while (foreLastWagon != null) {
-            beforeForeLastWagon = foreLastWagon.hasPreviousWagon() ? foreLastWagon.previousWagon : null;
+        //wagon to attach the new head of the sequence to.
+        Wagon toAttachToWagon = this.previousWagon;
 
-            //break relation and attach
-            foreLastWagon.removeFromSequence();
-            currentWagon.attachTail(foreLastWagon);
+        for (int i = 0; i < sequenceLength; i++) {
 
-            currentWagon = foreLastWagon;
-            foreLastWagon = beforeForeLastWagon;
+            //detach first wagon from front
+            if (i == 0){
+                currentWagon.detachFront();
+            }
+
+            nextWagon = currentWagon.nextWagon;
+
+            currentWagon.nextWagon = currentWagon.previousWagon;
+            currentWagon.previousWagon = nextWagon;
+
+
+            if (currentWagon.hasPreviousWagon()){
+                currentWagon = currentWagon.previousWagon;
+            }
         }
 
-        return newStartOfWagon;
+        if (toAttachToWagon != null){
+            toAttachToWagon.attachTail(currentWagon);
+        }
+
+        return currentWagon;
     }
+
 
     public void setNextWagon(Wagon nextWagon) {
         this.nextWagon = nextWagon;
