@@ -231,40 +231,40 @@ public abstract class Wagon {
     //string reprisentation of a Wagon
     @Override
     public String toString() {
-        return  "[Wagon-" + this.id + "]";
-//        StringBuilder stringBuilder = new StringBuilder();
-//
-//        stringBuilder.append("[id : ").append(this.id).append("]").append("\n");//id
-//
-//        stringBuilder.append("[previousWagon : ");
-//
-//        if (hasPreviousWagon()) {
-//            stringBuilder.append(this.previousWagon.getId());//pw
-//        }
-//
-//        stringBuilder.append("]").append("\n");
-//
-//
-//        stringBuilder.append("[nextWagon : ");
-//
-//        if (hasNextWagon()) {
-//            stringBuilder.append(this.nextWagon.getId());//nw
-//        }
-//        stringBuilder.append("]").append("\n");
-//
-//
-//        //sequence with this wagon as starting point
-//        stringBuilder.append("Sequence : ");
-//
-//        Wagon wagon = this;
-//        int sequenceLength = getSequenceLength();
-//
-//            for (int i = 0; i < sequenceLength; i++) {
-//            stringBuilder.append("[Wagon-").append(wagon.id).append("]");
-//            wagon = wagon.getNextWagon();
-//        }
-//            stringBuilder.append("\n");
-//
-//        return stringBuilder.toString();
+//        return  "[Wagon-" + this.id + "]";
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("[id : ").append(this.id).append("]").append("\n");//id
+
+        stringBuilder.append("[previousWagon : ");
+
+        if (hasPreviousWagon()) {
+            stringBuilder.append(this.previousWagon.getId());//pw
+        }
+
+        stringBuilder.append("]").append("\n");
+
+
+        stringBuilder.append("[nextWagon : ");
+
+        if (hasNextWagon()) {
+            stringBuilder.append(this.nextWagon.getId());//nw
+        }
+        stringBuilder.append("]").append("\n");
+
+
+        //sequence with this wagon as starting point
+        stringBuilder.append("Sequence : ");
+
+        Wagon wagon = this;
+        int sequenceLength = getSequenceLength();
+
+            for (int i = 0; i < sequenceLength; i++) {
+            stringBuilder.append("[Wagon-").append(wagon.id).append("]");
+            wagon = wagon.getNextWagon();
+        }
+            stringBuilder.append("\n");
+
+        return stringBuilder.toString();
     }
 }

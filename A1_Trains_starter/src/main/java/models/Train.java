@@ -297,11 +297,22 @@ public class Train {
         if (!hasWagons() && position != 0) return false;
 
 
+        wagon.detachFront();
+
         // If the train has no wagons and position is 0 wagon = firstwagon
         if (!hasWagons() && position == 0) {
             setFirstWagon(wagon);
             return true;
         }
+
+        if (hasWagons() && position == 0){
+            wagon.getLastWagonAttached().attachTail(this.firstWagon);
+            setFirstWagon(wagon);
+            return true;
+        }
+
+
+
 
         int trainLength = this.firstWagon.getSequenceLength();
 
@@ -318,8 +329,6 @@ public class Train {
             return false;
         }
 
-        wagon.detachFront();
-
 
         Wagon toBeAttachedToWagon = toBeReattachedWagon.detachFront();
 
@@ -327,12 +336,8 @@ public class Train {
             toBeAttachedToWagon.attachTail(wagon);
         }
 
-        setFirstWagon(wagon);
 
-        wagon.attachTail(toBeReattachedWagon);
-
-
-
+        wagon.getLastWagonAttached().attachTail(toBeReattachedWagon);
         return true;
     }
 

@@ -263,10 +263,13 @@ public class TrainTest {
 
     @Test
     public void T19_CanInsertAtAnyPosition() {
+
+//        System.out.println(trainWithoutWagons  +"\n"+ passengerTrain);
         assertTrue(trainWithoutWagons.insertAtPosition(0, passengerTrain.getLastWagonAttached()),
                 "can insert a single wagon at position 1 of empty train");
         assertEquals(8007, trainWithoutWagons.getFirstWagon().getId(),
                 "insertAtPosition should disconnect and insert the given head wagon");
+//        System.out.println(trainWithoutWagons  +"\n"+ passengerTrain);
 
         //TODO
         assertTrue(trainWithoutWagons.insertAtPosition(0, passengerTrain.getLastWagonAttached()),
@@ -281,9 +284,13 @@ public class TrainTest {
 
         assertTrue(trainWithoutWagons.insertAtPosition(2, passengerTrain.getLastWagonAttached()),
                 "can insert a single wagon immediately before the last wagon in a train");
+
         assertEquals(8004, trainWithoutWagons.findWagonAtPosition(2).getId(),
                 "insertAtPosition should disconnect and insert the given head wagon");
 
+        System.out.println(trainWithoutWagons);
+        System.out.println("\n");
+//        System.out.println(passengerWagon8002);
         assertTrue(trainWithoutWagons.insertAtPosition(2, passengerWagon8002),
                 "can insert a sequence at a mid position in a train");
         assertEquals(8002, trainWithoutWagons.findWagonAtPosition(2).getId(),
