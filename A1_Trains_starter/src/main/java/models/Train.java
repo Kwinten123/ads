@@ -160,7 +160,6 @@ public class Train {
      */
 
 
-    //TODO misschien verandersen
     public Wagon findWagonById(int wagonId) {
         if (!hasWagons()) return null; //no wagons
 
@@ -287,7 +286,6 @@ public class Train {
      * @return  whether the insertion could be completed successfully
      */
 
-    //TODO
     public boolean insertAtPosition(int position, Wagon wagon) {
         // Check if the wagon can be attached
         if (!canAttach(wagon)) return false;
@@ -310,8 +308,6 @@ public class Train {
             setFirstWagon(wagon);
             return true;
         }
-
-
 
 
         int trainLength = this.firstWagon.getSequenceLength();
@@ -363,7 +359,6 @@ public class Train {
 
         if (!toTrain.canAttach(toBeMovedWagon)) return false;
 
-        //TODO een beetje questionable misschien nog anders oplossen.
         if (toBeMovedWagon == this.firstWagon){
             setFirstWagon(this.firstWagon.getNextWagon());
         }
@@ -388,7 +383,6 @@ public class Train {
      */
     public boolean splitAtPosition(int position, Train toTrain) {
         if (!hasWagons()) return false;
-
 
 
         //is wagon in bounds?
@@ -444,7 +438,7 @@ public class Train {
         Wagon wagon = this.firstWagon;
 
         for (int i = 0; i < trainLength; i++) {
-            stringBuilder.append("[Wagon-").append(wagon.id).append("]");
+            stringBuilder.append(wagon);
             wagon = wagon.getNextWagon();
         }
 
